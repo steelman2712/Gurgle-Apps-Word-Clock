@@ -8,3 +8,4 @@ build/.tmp-no-forms.css
 __pycache__/
 *.pyc
 _internal/
+src/config_wifi.json

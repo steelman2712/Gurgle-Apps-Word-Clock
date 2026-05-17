@@ -1,0 +1,40 @@
+{
+  "name": "Word Clock - MicroPython",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+
+
+  // Pass the Pico's serial port through to the container.
+  // Check the correct device with: ls /dev/ttyACM* /dev/ttyUSB*
+  "runArgs": [
+      "--privileged",
+      "--group-add=keep-groups",
+      "--userns=host",
+      "--userns=keep-id"
+  ],
+
+  // Give the container user access to the serial device.
+  "postCreateCommand": "sudo groupadd -g 27 dialout 2>/dev/null || true && sudo usermod -aG dialout vscode",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // MicroPython dev on Pico
+        "paulober.pico-w-go@3.8.2",
+        // Python language support (required by MicroPico)
+        "ms-python.python",
+        "ms-python.pylance",
+        "anthropic.claude-code"
+      ],
+      "settings": {
+        // Point MicroPico at the container's Python
+        "micropico.pythonPath": "/usr/local/bin/python3",
+        // Sync only the src/ folder contents to the Pico root
+        "micropico.syncFolder": "src",
+        // Upload .py, .json, and files in www/
+        "micropico.syncAllFileTypes": true
+      }
+    }
+  }
+}
